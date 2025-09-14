@@ -1,81 +1,93 @@
-# プロジェクト概要: Tailspin Shelter# AGENTS.md
+# プロジェクト概要: Tailspin Shelter
 
+このドキュメントは、AI開発アシスタントがこのプロジェクトの構造と目的を理解するための概要を提供します。
 
+## 概要
 
-このドキュメントは、AI開発アシスタントがこのプロジェクトの構造と目的を理解するための概要を提供します。## プロジェクト概要
+このプロジェクトは、犬の保護施設「Tailspin Shelter」のウェブアプリケーションです。フロントエンド、バックエンド、データベースで構成されるフルスタックアプリケーションのサンプルとして、ペット（犬）の情報を管理します。
 
+## 技術スタック
 
+### フロントエンド (`client/`)
 
-## 概要このプロジェクトは、ペット（犬）の情報を管理するためのWebアプリケーションです。フロントエンド、バックエンド、データベースで構成されるフルスタックアプリケーションのサンプルです。
+-   **フレームワーク:** [Astro](https://astro.build/)
+-   **UIコンポーネント:** [Svelte](https://svelte.dev/)
+-   **言語:** TypeScript
+-   **パッケージ管理:** npm
+-   **E2Eテスト:** [Playwright](https://playwright.dev/)
+-   **主要ファイル:** [`client/src/pages/index.astro`](client/src/pages/index.astro), [`client/src/components/DogList.svelte`](client/src/components/DogList.svelte)
 
+### バックエンド (`server/`)
 
+-   **フレームワーク:** [Flask](https://flask.palletsprojects.com/) (Python)
+-   **データベース:** SQLite
+-   **ORM:** [SQLAlchemy](https://www.sqlalchemy.org/)
+-   **主な依存関係:** `flask`, `sqlalchemy`, `flask_sqlalchemy`, `flask-cors`
+-   **主要ファイル:** [`server/app.py`](server/app.py)
+-   **テスト:** `unittest` ([`server/test_app.py`](server/test_app.py))
 
-このプロジェクトは、犬の保護施設「Tailspin Shelter」のウェブアプリケーションです。フロントエンドとバックエンドが分離された構成になっています。### 技術スタック
+### 開発環境
 
+-   Dev Container ([`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json))
 
+## ディレクトリ構造
 
-- **フロントエンド (`client/`):** [Astro](https://astro.build/) と [Svelte](https://svelte.dev/) で構築されたウェブサイトです。犬のリスト表示、詳細表示、施設についての情報を提供します。- **フロントエンド (client/)**
+-   `client/`: Astroで構築されたフロントエンドアプリケーションのソースコードが含まれています。
+    -   `src/pages/`: 各ページのコンポーネント。
+    -   `src/components/`: 再利用可能なSvelteコンポーネント。
+-   `server/`: Flaskで構築されたバックエンドAPIのソースコードが含まれています。
+    -   `app.py`: APIエンドポイントを定義するメインファイル。
+    -   `models/`: SQLAlchemyのデータベースモデル。
+    -   `dogshelter.db`: SQLiteデータベースファイル。
+-   `scripts/`: アプリケーションの起動などを補助するスクリプトが含まれています。
 
-- **バックエンド (`server/`):** [Flask](https://flask.palletsprojects.com/) (Python) で構築されたAPIサーバーです。犬と犬種に関するデータをSQLiteデータベースから提供します。  - **フレームワーク:** [Astro](https://astro.build/)
+## アーキテクチャのポイント
 
-  - **UIコンポーネント:** [Svelte](https://svelte.dev/)
+-   **API通信:** フロントエンドは、Astroのミドルウェア ([`client/src/middleware.ts`](client/src/middleware.ts)) を使用して、`/api/*` へのリクエストをバックエンドのFlaskサーバー (デフォルト `http://localhost:5100`) に転送します。
+-   **データモデル:**
+    -   `Dog`: [`server/models/dog.py`](server/models/dog.py) で定義されています。
+    -   `Breed`: [`server/models/breed.py`](server/models/breed.py) で定義されています。
 
-## 主要な技術スタック  - **言語:** TypeScript
+## 開発ルール
+### バックエンド
 
-  - **パッケージ管理:** npm
+- FlaskとSQLAlchemyを使用して構築
+- 型ヒントを使用
 
-- **バックエンド:**  - **E2Eテスト:** [Playwright](https://playwright.dev/)
+### フロントエンド
 
-  - フレームワーク: Flask
+- AstroとSvelteを使用して構築
+- TypeScriptはfunctionキーワードではなくアロー関数を使用すべき
+- ページはモダンな外観と感触のダークモードであるべき
 
-  - データベース: SQLite- **バックエンド (server/)**
+## 起動方法
 
-  - ORM: SQLAlchemy  - **フレームワーク:** [Flask](https://flask.palletsprojects.com/) (Python)
+プロジェクトのルートディレクトリで [`scripts/start-app.sh`](scripts/start-app.sh) (Linux/macOS) または [`scripts/start-app.ps1`](scripts/start-app.ps1) (Windows) を実行すると、バックエンドとフロントエンドの両方のサーバーが起動します。
 
-  - 主要ファイル: [`server/app.py`](server/app.py)  - **データベース:** SQLite
-
-- **フロントエンド:**  - **ORM:** [SQLAlchemy](https://www.sqlalchemy.org/)
-
-  - フレームワーク: Astro, Svelte  - **主な依存関係:** `flask`, `sqlalchemy`, `flask_sqlalchemy`, `flask-cors`
-
-  - スタイリング: Tailwind CSS
-
-  - 主要ファイル: [`client/src/pages/index.astro`](client/src/pages/index.astro), [`client/src/components/DogList.svelte`](client/src/components/DogList.svelte)### ディレクトリ構造の要点
-
-- **テスト:**
-
-  - バックエンド: `unittest` ([`server/test_app.py`](server/test_app.py))- `client/`: Astroで構築されたフロントエンドアプリケーションのソースコードが含まれています。
-
-  - フロントエンド (E2E): Playwright ([`client/e2e-tests/`](client/e2e-tests/))  - `src/pages/`: 各ページのコンポーネント。
-
-- **開発環境:**  - `src/components/`: 再利用可能なSvelteコンポーネント。
-
-  - Dev Container ([`.devcontainer/devcontainer.json`](.devcontainer/devcontainer.json))- `server/`: Flaskで構築されたバックエンドAPIのソースコードが含まれています。
-
-  - `app.py`: APIエンドポイントを定義するメインファイル。
-
-## アーキテクチャのポイント  - `models/`: SQLAlchemyのデータベースモデル。
-
-  - `dogshelter.db`: SQLiteデータベースファイル。
-
-- **API通信:** フロントエンドは、Astroのミドルウェア ([`client/src/middleware.ts`](client/src/middleware.ts)) を使用して、`/api/*` へのリクエストをバックエンドのFlaskサーバー (デフォルト `http://localhost:5100`) に転送します。- `scripts/`: アプリケーションの起動などを補助するスクリプトが含まれています。
-
-- **データベース:** データベースは [`server/dogshelter.db`](server/dogshelter.db) という単一のSQLiteファイルです。- `content/`: アプリケーションで使用される静的なコンテンツが含まれている可能性があります。
-
-- **データモデル:**
-
-  - `Dog`: [`server/models/dog.py`](server/models/dog.py) で定義されています。### 起動方法
-
-  - `Breed`: [`server/models/breed.py`](server/models/breed.py) で定義されています。
-
-- **初期データ:** [`server/utils/seed_database.py`](server/utils/seed_database.py) スクリプトが [`server/models/dogs.csv`](server/models/dogs.csv) と [`server/models/breeds.csv`](server/models/breeds.csv) からデータベースに初期データを投入します。リポジトリのルートディレクトリで以下のコマンドを実行することで、開発環境が起動します。
-
-
-
-## 起動方法```bash
-
+```bash
 ./scripts/start-app.sh
+```
 
+このスクリプトは以下の処理を自動的に行います。
+
+1.  Pythonの仮想環境 (`venv`) をセットアップし、必要な依存関係を `server/requirements.txt` からインストールします。
+2.  Flaskバックエンドサーバーを `http://localhost:5100` で起動します。
+3.  `npm install` を実行してフロントエンドの依存関係をインストールします。
+4.  Astroフロントエンド開発サーバーを `http://localhost:4321` で起動します。
+
+-   フロントエンド: `http://localhost:4321`
+-   バックエンド: `http://localhost:5100`
+
+### 主要なAPIエンドポイント
+
+-   `GET /api/dogs`: 登録されているすべての犬のリストを取得します。
+-   `GET /api/dogs/<id>`: 指定されたIDの犬の詳細情報を取得します。
+-   `GET /api/breeds`: 登録されているすべての犬種のリストを取得します。
+
+### データベース
+
+-   **テーブル:** `dogs` と `breeds` の2つの主要なテーブルがあります。
+-   **初期データ:** `server/models/dogs.csv` と `server/models/breeds.csv` が初期データとして提供されており、`server/utils/seed_database.py` を使ってデータベースに投入されます。
 プロジェクトのルートディレクトリで [`scripts/start-app.sh`](scripts/start-app.sh) (Linux/macOS) または [`scripts/start-app.ps1`](scripts/start-app.ps1) (Windows) を実行すると、バックエンドとフロントエンドの両方のサーバーが起動します。```
 
 
